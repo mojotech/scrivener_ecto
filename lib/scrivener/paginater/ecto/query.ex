@@ -39,15 +39,17 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
   end
 
   defp total_entries(query, repo) do
-    stripped_query = query
+    [primary_key|_] = query.from
+    |> elem(1)
+    |> apply(:__schema__, [:primary_key])
+
+    query
     |> exclude(:order_by)
     |> exclude(:preload)
     |> exclude(:select)
-
-    {query_sql, parameters} =  Ecto.Adapters.SQL.to_sql(:all, repo, stripped_query)
-    {:ok, %{num_rows: 1, rows: [[count]]}} = Ecto.Adapters.SQL.query(repo, "SELECT count(*) FROM (#{query_sql}) AS temp", parameters)
-
-    count
+    |> exclude(:group_by)
+    |> select([m], count(field(m, ^primary_key), :distinct))
+    |> repo.one!
   end
 
   defp total_pages(total_entries, page_size) do
