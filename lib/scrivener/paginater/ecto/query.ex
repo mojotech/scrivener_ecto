@@ -39,9 +39,11 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
   end
 
   defp total_entries(query, repo) do
-    [primary_key|_] = query.from
-    |> elem(1)
-    |> apply(:__schema__, [:primary_key])
+    primary_key =
+      query.from
+      |> elem(1)
+      |> apply(:__schema__, [:primary_key])
+      |> hd
 
     query
     |> exclude(:order_by)
