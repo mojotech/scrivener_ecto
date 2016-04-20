@@ -10,13 +10,13 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       title: "Title unpublished",
       body: "Body unpublished",
       published: false
-    } |> ScrivenerEcto.Repo.insert!
+    } |> Scrivener.Ecto.Repo.insert!
 
     Enum.map(1..2, fn i ->
       %Comment{
         body: "Body #{i}",
         post_id: unpublished_post.id
-      } |> ScrivenerEcto.Repo.insert!
+      } |> Scrivener.Ecto.Repo.insert!
     end)
 
     Enum.map(1..6, fn i ->
@@ -24,7 +24,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         title: "Title #{i}",
         body: "Body #{i}",
         published: true
-      } |> ScrivenerEcto.Repo.insert!
+      } |> Scrivener.Ecto.Repo.insert!
     end)
   end
 
@@ -33,7 +33,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       %KeyValue{
         key: "key_#{i}",
         value: (rem(i, 2) |> to_string)
-      } |> ScrivenerEcto.Repo.insert!
+      } |> Scrivener.Ecto.Repo.insert!
     end)
   end
 
@@ -44,7 +44,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> ScrivenerEcto.Repo.paginate
+        |> Scrivener.Ecto.Repo.paginate
 
       assert page.page_size == 5
       assert page.page_number == 1
@@ -60,7 +60,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         Post
         |> Post.published
         |> order_by([p], desc: p.inserted_at)
-        |> ScrivenerEcto.Repo.paginate
+        |> Scrivener.Ecto.Repo.paginate
 
       assert page.page_size == 5
       assert page.page_number == 1
@@ -74,7 +74,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> ScrivenerEcto.Repo.paginate(%{"page" => "2", "page_size" => "3"})
+        |> Scrivener.Ecto.Repo.paginate(%{"page" => "2", "page_size" => "3"})
 
       assert page.page_size == 3
       assert page.page_number == 2
@@ -88,7 +88,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> ScrivenerEcto.Repo.paginate(page: 2, page_size: 3)
+        |> Scrivener.Ecto.Repo.paginate(page: 2, page_size: 3)
 
       assert page.page_size == 3
       assert page.page_number == 2
@@ -100,7 +100,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> ScrivenerEcto.Repo.paginate(%{"page" => "1", "page_size" => "20"})
+        |> Scrivener.Ecto.Repo.paginate(%{"page" => "1", "page_size" => "20"})
 
       assert page.page_size == 10
     end
@@ -111,7 +111,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         KeyValue
         |> KeyValue.zero
-        |> ScrivenerEcto.Repo.paginate(page_size: 2)
+        |> Scrivener.Ecto.Repo.paginate(page_size: 2)
 
       assert page.total_entries == 5
       assert page.total_pages == 3
@@ -124,7 +124,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         Post
         |> join(:left, [p], c in assoc(p, :comments))
         |> group_by([p], p.id)
-        |> ScrivenerEcto.Repo.paginate
+        |> Scrivener.Ecto.Repo.paginate
 
       assert page.total_entries == 7
     end
@@ -133,7 +133,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       posts = create_posts
 
       config = %Scrivener.Config{
-        module: ScrivenerEcto.Repo,
+        module: Scrivener.Ecto.Repo,
         page_number: 2,
         page_size: 4
       }
@@ -155,7 +155,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> Scrivener.paginate(module: ScrivenerEcto.Repo, page: 2, page_size: 4)
+        |> Scrivener.paginate(module: Scrivener.Ecto.Repo, page: 2, page_size: 4)
 
       assert page.page_size == 4
       assert page.page_number == 2
@@ -169,7 +169,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> Scrivener.paginate(%{"module" => ScrivenerEcto.Repo, "page" => 2, "page_size" => 4})
+        |> Scrivener.paginate(%{"module" => Scrivener.Ecto.Repo, "page" => 2, "page_size" => 4})
 
       assert page.page_size == 4
       assert page.page_number == 2
