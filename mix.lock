@@ -8,4 +8,4 @@
   "ex_spec": {:hex, :ex_spec, "1.0.0"},
   "poolboy": {:hex, :poolboy, "1.5.1"},
   "postgrex": {:hex, :postgrex, "0.11.1"},
-  "scrivener": {:git, "https://github.com/drewolson/scrivener", "fd083beea7c4243b061bd5a54bb12bfc09c13fa6", [branch: "v2"]}}
+  "scrivener": {:git, "https://github.com/drewolson/scrivener", "7ed1f54a35da6bf3a695734d364ef3058cd964da", [branch: "v2"]}}
