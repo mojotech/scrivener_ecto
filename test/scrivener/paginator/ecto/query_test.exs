@@ -1,9 +1,7 @@
 defmodule Scrivener.Paginator.Ecto.QueryTest do
   use Scrivener.Ecto.TestCase
 
-  alias Scrivener.Ecto.Post
-  alias Scrivener.Ecto.Comment
-  alias Scrivener.Ecto.KeyValue
+  alias Scrivener.Ecto.{Comment, KeyValue, Post}
 
   defp create_posts do
     unpublished_post = %Post{

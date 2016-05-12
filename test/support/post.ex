@@ -1,5 +1,6 @@
 defmodule Scrivener.Ecto.Post do
   use Ecto.Schema
+
   import Ecto.Query
 
   schema "posts" do
