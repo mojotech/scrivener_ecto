@@ -3,6 +3,8 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
 
   alias Scrivener.{Config, Page}
 
+  @moduledoc false
+
   @spec paginate(Ecto.Query.t, Scrivener.Config.t) :: Scrivener.Page.t
   def paginate(query, %Config{page_size: page_size, page_number: page_number, module: repo}) do
     total_entries = total_entries(query, repo)

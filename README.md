@@ -34,7 +34,7 @@ end
 def index(conn, params) do
   page = MyApp.Person
   |> where([p], p.age > 30)
-  |> order_by([p], desc: p.age)
+  |> order_by(desc: :age)
   |> preload(:friends)
   |> MyApp.Repo.paginate(params)
 
@@ -50,7 +50,7 @@ end
 ```elixir
 page = MyApp.Person
 |> where([p], p.age > 30)
-|> order_by([p], desc: p.age)
+|> order_by(desc: :age)
 |> preload(:friends)
 |> MyApp.Repo.paginate(page: 2, page_size: 5)
 ```
