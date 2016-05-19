@@ -32,8 +32,8 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     offset = page_size * (page_number - 1)
 
     query
-    |> limit([_], ^page_size)
-    |> offset([_], ^offset)
+    |> limit(^page_size)
+    |> offset(^offset)
     |> repo.all
   end
 
