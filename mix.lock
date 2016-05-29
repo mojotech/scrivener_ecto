@@ -9,4 +9,4 @@
   "ex_spec": {:hex, :ex_spec, "1.0.0", "b1e791072fecbf80c725adf45e7cbdf3d96af3765638a1f1547824706ece4bc9", [:mix], []},
   "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], []},
   "postgrex": {:hex, :postgrex, "0.11.1", "f48af70c0a58b9bfd1aaa456ec4273624554cfb837726b6a7f0701da4a94b2dd", [:mix], [{:decimal, "~> 1.0", [hex: :decimal, optional: false]}, {:db_connection, "~> 0.2", [hex: :db_connection, optional: false]}, {:connection, "~> 1.0", [hex: :connection, optional: false]}]},
-  "scrivener": {:git, "https://github.com/drewolson/scrivener", "49e1029dffa1feda7615f96592dcb07366f3196a", [branch: "v2"]}}
+  "scrivener": {:git, "https://github.com/drewolson/scrivener", "edea64662564e9fbc9b5a8f50ed265c93d5dfa67", [branch: "v2"]}}
