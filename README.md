@@ -1,6 +1,6 @@
 # Scrivener.Ecto
 
-[![Build Status](https://travis-ci.org/drewolson/scrivener_ecto.svg)](https://travis-ci.org/drewolson/scrivener_ecto) [![Hex Version](http://img.shields.io/hexpm/v/scrivener_ecto.svg?style=flat)](https://hex.pm/packages/scrivener_ecto) [![Hex docs](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/scrivener_ecto)
+[![Build Status](https://travis-ci.org/drewolson/scrivener_ecto.svg?branch=master)](https://travis-ci.org/drewolson/scrivener_ecto) [![Hex Version](http://img.shields.io/hexpm/v/scrivener_ecto.svg?style=flat)](https://hex.pm/packages/scrivener_ecto) [![Hex docs](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/scrivener_ecto)
 
 Scrivener.Ecto allows you to paginate your Ecto queries with Scrivener. It gives you useful information such as the total number of pages, the current page, and the current page's entries. It works nicely with Phoenix as well.
 
