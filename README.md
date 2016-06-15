@@ -32,11 +32,12 @@ end
 
 ```elixir
 def index(conn, params) do
-  page = MyApp.Person
-  |> where([p], p.age > 30)
-  |> order_by(desc: :age)
-  |> preload(:friends)
-  |> MyApp.Repo.paginate(params)
+  page =
+    MyApp.Person
+    |> where([p], p.age > 30)
+    |> order_by(desc: :age)
+    |> preload(:friends)
+    |> MyApp.Repo.paginate(params)
 
   render conn, :index,
     people: page.entries,
@@ -48,11 +49,12 @@ end
 ```
 
 ```elixir
-page = MyApp.Person
-|> where([p], p.age > 30)
-|> order_by(desc: :age)
-|> preload(:friends)
-|> MyApp.Repo.paginate(page: 2, page_size: 5)
+page =
+  MyApp.Person
+  |> where([p], p.age > 30)
+  |> order_by(desc: :age)
+  |> preload(:friends)
+  |> MyApp.Repo.paginate(page: 2, page_size: 5)
 ```
 
 ## Installation
