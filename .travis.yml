@@ -2,7 +2,7 @@ language: elixir
 otp_release:
   - 18.2
 elixir:
-  - 1.2.5
+  - 1.2.6
 before_script:
   - export SCRIVENER_ECTO_DB_USER=postgres
   - MIX_ENV=test mix scrivener.ecto.db.reset
