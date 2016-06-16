@@ -34,7 +34,7 @@ defmodule Scrivener.Ecto.Mixfile do
       {:earmark, ">= 0.0.0", only: :dev},
       {:ex_doc, "~> 0.11.0", only: :dev},
       {:ex_spec, "~> 1.0", only: :test},
-      {:postgrex, ">= 0.0.0", optional: true}
+      {:postgrex, "~> 0.11.2", optional: true}
     ]
   end
 
