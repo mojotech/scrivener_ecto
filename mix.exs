@@ -11,8 +11,10 @@ defmodule Scrivener.Ecto.Mixfile do
       description: "Paginate your Ecto queries with Scrivener",
       deps: deps,
       docs: [
-        main: "README.md",
-        readme: "README.md"
+        main: "readme",
+        extras: [
+          "README.md"
+        ]
       ]
     ]
   end
