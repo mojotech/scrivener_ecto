@@ -3,7 +3,7 @@ defmodule Scrivener.Ecto.TestCase do
 
   using(opts) do
     quote do
-      use ExSpec, unquote(opts)
+      use ExUnit.Case, unquote(opts)
       import Ecto.Query
     end
   end

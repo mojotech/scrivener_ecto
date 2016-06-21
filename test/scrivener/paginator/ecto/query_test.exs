@@ -36,7 +36,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
   end
 
   describe "paginate" do
-    it "paginates an unconstrained query" do
+    test "paginates an unconstrained query" do
       create_posts
 
       page = Post |> Scrivener.Ecto.Repo.paginate
@@ -47,7 +47,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
-    it "uses defaults from the repo" do
+    test "uses defaults from the repo" do
       posts = create_posts
 
       page =
@@ -62,7 +62,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
-    it "removes invalid clauses before counting total pages" do
+    test "removes invalid clauses before counting total pages" do
       posts = create_posts
 
       page =
@@ -77,7 +77,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
-    it "can be provided the current page and page size as a params map" do
+    test "can be provided the current page and page size as a params map" do
       posts = create_posts
 
       page =
@@ -91,7 +91,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
-    it "can be provided the current page and page size as options" do
+    test "can be provided the current page and page size as options" do
       posts = create_posts
 
       page =
@@ -105,7 +105,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
-    it "will respect the max_page_size configuration" do
+    test "will respect the max_page_size configuration" do
       page =
         Post
         |> Post.published
@@ -114,7 +114,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.page_size == 10
     end
 
-    it "can be used on a table with any primary key" do
+    test "can be used on a table with any primary key" do
       create_key_values
 
       page =
@@ -126,7 +126,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 3
     end
 
-    it "can be used with a group by clause" do
+    test "can be used with a group by clause" do
       create_posts
 
       page =
@@ -138,7 +138,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_entries == 7
     end
 
-    it "can be provided a Scrivener.Config directly" do
+    test "can be provided a Scrivener.Config directly" do
       posts = create_posts
 
       config = %Scrivener.Config{
@@ -158,7 +158,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
-    it "can be provided a keyword directly" do
+    test "can be provided a keyword directly" do
       posts = create_posts
 
       page =
@@ -172,7 +172,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
-    it "can be provided a map directly" do
+    test "can be provided a map directly" do
       posts = create_posts
 
       page =
