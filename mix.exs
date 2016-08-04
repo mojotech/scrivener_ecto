@@ -30,7 +30,7 @@ defmodule Scrivener.Ecto.Mixfile do
 
   defp deps do
     [
-      {:scrivener, "~> 2.0"},
+      {:scrivener, github: "coryodaniel/scrivener"},
       {:ecto, "~> 2.0"},
       {:dialyxir, "~> 0.3.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev},

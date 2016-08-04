@@ -47,6 +47,23 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
+    test "uses defaults from the repo when passed nil" do
+      posts = create_posts
+
+      params = %{}
+
+      page =
+        Post
+        |> Post.published
+        |> Scrivener.Ecto.Repo.paginate(params["page"])
+
+      assert page.page_size == 5
+      assert page.page_number == 1
+      assert page.entries == Enum.take(posts, 5)
+      assert page.total_entries == 6
+      assert page.total_pages == 2
+    end
+
     test "uses defaults from the repo" do
       posts = create_posts
 
@@ -83,7 +100,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> Scrivener.Ecto.Repo.paginate(%{"page" => "2", "page_size" => "3"})
+        |> Scrivener.Ecto.Repo.paginate(%{"page_number" => "2", "page_size" => "3"})
 
       assert page.page_size == 3
       assert page.page_number == 2
@@ -97,7 +114,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> Scrivener.Ecto.Repo.paginate(page: 2, page_size: 3)
+        |> Scrivener.Ecto.Repo.paginate(page_number: 2, page_size: 3)
 
       assert page.page_size == 3
       assert page.page_number == 2
@@ -109,7 +126,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> Scrivener.Ecto.Repo.paginate(%{"page" => "1", "page_size" => "20"})
+        |> Scrivener.Ecto.Repo.paginate(%{"page_number" => "1", "page_size" => "20"})
 
       assert page.page_size == 10
     end
@@ -164,7 +181,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> Scrivener.paginate(module: Scrivener.Ecto.Repo, page: 2, page_size: 4)
+        |> Scrivener.paginate(module: Scrivener.Ecto.Repo, page_number: 2, page_size: 4)
 
       assert page.page_size == 4
       assert page.page_number == 2
@@ -178,7 +195,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> Scrivener.paginate(%{"module" => Scrivener.Ecto.Repo, "page" => 2, "page_size" => 4})
+        |> Scrivener.paginate(%{"module" => Scrivener.Ecto.Repo, "page_number" => 2, "page_size" => 4})
 
       assert page.page_size == 4
       assert page.page_number == 2
