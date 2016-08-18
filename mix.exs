@@ -10,11 +10,22 @@ defmodule Scrivener.Ecto.Mixfile do
       package: package,
       description: "Paginate your Ecto queries with Scrivener",
       deps: deps,
+      aliases: aliases,
       docs: [
         main: "readme",
         extras: [
           "README.md"
         ]
+      ]
+    ]
+  end
+
+  defp aliases do
+    [
+      "db.reset": [
+        "ecto.drop",
+        "ecto.create",
+        "ecto.migrate"
       ]
     ]
   end
@@ -34,7 +45,7 @@ defmodule Scrivener.Ecto.Mixfile do
       {:ecto, "~> 2.0"},
       {:dialyxir, "~> 0.3.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev},
-      {:ex_doc, "~> 0.11.0", only: :dev},
+      {:ex_doc, "~> 0.13.0", only: :dev},
       {:postgrex, "~> 0.11.2", optional: true}
     ]
   end

@@ -5,4 +5,4 @@ elixir:
   - 1.3.0
 before_script:
   - export SCRIVENER_ECTO_DB_USER=postgres
-  - MIX_ENV=test mix scrivener.ecto.db.reset
+  - MIX_ENV=test mix db.reset
