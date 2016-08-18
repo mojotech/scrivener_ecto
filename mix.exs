@@ -36,8 +36,8 @@ defmodule Scrivener.Ecto.Mixfile do
     ]
   end
 
-  defp applications(:test), do: [:postgrex, :ecto, :logger]
-  defp applications(_), do: [:logger]
+  defp applications(:test), do: [:scrivener, :postgrex, :ecto, :logger]
+  defp applications(_), do: [:scrivener, :logger]
 
   defp deps do
     [
