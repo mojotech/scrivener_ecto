@@ -46,7 +46,7 @@ defmodule Scrivener.Ecto.Mixfile do
       {:dialyxir, "~> 0.3.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev},
       {:ex_doc, "~> 0.13.0", only: :dev},
-      {:postgrex, "~> 0.12.0", optional: true}
+      {:postgrex, "~> 0.11.0 or ~> 0.12.0", optional: true}
     ]
   end
 
