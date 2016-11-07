@@ -18,18 +18,6 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     }
   end
 
-  defp ceiling(float) do
-    t = trunc(float)
-
-    case float - t do
-      neg when neg < 0 ->
-        t
-      pos when pos > 0 ->
-        t + 1
-      _ -> t
-    end
-  end
-
   defp entries(query, repo, page_number, page_size) do
     offset = page_size * (page_number - 1)
 
@@ -56,6 +44,6 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
   end
 
   defp total_pages(total_entries, page_size) do
-    ceiling(total_entries / page_size)
+    (total_entries / page_size) |> Float.ceil |> round
   end
 end
