@@ -1,6 +1,8 @@
 # Changelog
 
-## 1.1.0-dev
+## 1.0.3
+
+* Gracefully handle no result when counting records
 
 ## 1.0.2
 
