@@ -68,7 +68,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> Post.published
-        |> order_by([p], desc: p.inserted_at)
+        |> order_by([p], asc: p.id)
         |> Scrivener.Ecto.Repo.paginate
 
       assert page.page_size == 5
