@@ -2,6 +2,8 @@
 
 ## 1.1.0-dev
 
+* Support Ecto 2.1.x
+
 ## 1.0.3
 
 * Gracefully handle no result when counting records
