@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.2.0-dev
+
 ## 1.1.0
 
 * Support Ecto 2.1.x
