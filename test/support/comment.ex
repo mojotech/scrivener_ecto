@@ -6,6 +6,6 @@ defmodule Scrivener.Ecto.Comment do
 
     belongs_to :post, Scrivener.Ecto.Post
 
-    timestamps
+    timestamps()
   end
 end

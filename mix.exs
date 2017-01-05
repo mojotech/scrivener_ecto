@@ -7,10 +7,10 @@ defmodule Scrivener.Ecto.Mixfile do
       version: "1.1.0",
       elixir: "~> 1.2",
       elixirc_paths: elixirc_paths(Mix.env),
-      package: package,
+      package: package(),
       description: "Paginate your Ecto queries with Scrivener",
-      deps: deps,
-      aliases: aliases,
+      deps: deps(),
+      aliases: aliases(),
       docs: [
         main: "readme",
         extras: [
