@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+
+* Remove Elixir 1.4.0 warnings
+
 ## 1.1.0
 
 * Support Ecto 2.1.x
