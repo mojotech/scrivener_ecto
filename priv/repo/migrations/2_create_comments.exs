@@ -6,7 +6,7 @@ defmodule Scrivener.Repo.Migrations.CreateComments do
       add :body, :string
       add :post_id, :integer
 
-      timestamps
+      timestamps()
     end
   end
 end

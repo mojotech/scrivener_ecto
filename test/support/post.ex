@@ -10,7 +10,7 @@ defmodule Scrivener.Ecto.Post do
 
     has_many :comments, Scrivener.Ecto.Comment
 
-    timestamps
+    timestamps()
   end
 
   def published(query) do

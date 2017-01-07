@@ -7,7 +7,7 @@ defmodule TestRepo.Migrations.CreatePosts do
       add :body, :string
       add :published, :boolean
 
-      timestamps
+      timestamps()
     end
   end
 end
