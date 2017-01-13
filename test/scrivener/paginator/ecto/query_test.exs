@@ -144,6 +144,17 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_entries == 7
     end
 
+    test "can be used with distinct" do
+      create_posts()
+
+      page =
+        Comment
+        |> distinct(:post_id)
+        |> Scrivener.Ecto.Repo.paginate
+
+      assert page.total_entries == 1
+    end
+
     test "can be provided a Scrivener.Config directly" do
       posts = create_posts()
 
