@@ -141,7 +141,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         |> group_by([p], p.id)
         |> Scrivener.Ecto.Repo.paginate
 
-      assert page.total_entries == 8
+      assert page.total_entries == 7
     end
 
     test "can be used with distinct" do

@@ -34,15 +34,29 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
       |> apply(:__schema__, [:primary_key])
       |> hd
 
-    total_entries =
+    query =
       query
       |> exclude(:order_by)
       |> exclude(:preload)
       |> exclude(:select)
       |> exclude(:group_by)
-      |> repo.aggregate(:count, primary_key)
+
+    total_entries =
+      if query.distinct do
+        query
+        |> subquery
+        |> count(repo, primary_key)
+      else
+        count(query, repo, primary_key)
+      end
 
     total_entries || 0
+  end
+
+  defp count(query, repo, primary_key) do
+    query
+    |> select([m], count(field(m, ^primary_key), :distinct))
+    |> repo.one
   end
 
   defp total_pages(total_entries, page_size) do
