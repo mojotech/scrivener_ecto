@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.2
+
+* Use `subquery` to calculate `total_entries`
+
 ## 1.1.1
 
 * Remove Elixir 1.4.0 warnings
