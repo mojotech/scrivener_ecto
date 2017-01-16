@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.3
+
+* Exclude `preload` and `select` before building a subquery
+
 ## 1.1.2
 
 * Use `subquery` to calculate `total_entries`
