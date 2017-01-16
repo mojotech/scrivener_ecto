@@ -97,6 +97,19 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
+    test "it handles complex selects" do
+      create_posts()
+
+      page =
+        Post
+        |> join(:left, [p], c in assoc(p, :comments))
+        |> group_by([p], p.id)
+        |> select([p], sum(p.id))
+        |> Scrivener.Ecto.Repo.paginate
+
+      assert page.total_entries == 7
+    end
+
     test "can be provided the current page and page size as a params map" do
       posts = create_posts()
 

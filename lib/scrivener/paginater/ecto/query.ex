@@ -31,6 +31,7 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     total_entries =
       query
       |> exclude(:preload)
+      |> exclude(:select)
       |> subquery
       |> select(count("*"))
       |> repo.one
