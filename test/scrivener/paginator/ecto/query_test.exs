@@ -62,27 +62,6 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
-    test "removes invalid clauses before counting total pages" do
-      posts = create_posts()
-
-      page =
-        Post
-        |> Post.published
-        |> order_by([p], desc: p.inserted_at)
-        |> Scrivener.Ecto.Repo.paginate
-
-      expected_posts =
-        posts
-        |> Enum.sort_by(&Map.get(&1, :inserted_at))
-        |> Enum.reverse
-        |> Enum.take(5)
-
-      assert page.page_size == 5
-      assert page.page_number == 1
-      assert page.entries == expected_posts
-      assert page.total_pages == 2
-    end
-
     test "it handles preloads" do
       create_posts()
 
