@@ -101,6 +101,18 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_entries == 7
     end
 
+    test "it handles complex order_by" do
+      create_posts()
+
+      page =
+        Post
+        |> select([p], fragment("? as aliased_title", p.title))
+        |> order_by([p], fragment("aliased_title"))
+        |> Scrivener.Ecto.Repo.paginate
+
+      assert page.total_entries == 7
+    end
+
     test "can be provided the current page and page size as a params map" do
       posts = create_posts()
 

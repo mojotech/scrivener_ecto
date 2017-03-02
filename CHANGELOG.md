@@ -2,6 +2,10 @@
 
 ## 1.2.0-dev
 
+## 1.1.4
+
+* Exclude `order_by` before building a subquery
+
 ## 1.1.3
 
 * Exclude `preload` and `select` before building a subquery
