@@ -9,11 +9,11 @@ defmodule Scrivener.Ecto.TestCase do
   end
 
   setup do
-    Ecto.Adapters.SQL.Sandbox.mode(Scrivener.Ecto.Repo, :manual)
-
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Scrivener.Ecto.Repo)
   end
 end
 
 Scrivener.Ecto.Repo.start_link
+Ecto.Adapters.SQL.Sandbox.mode(Scrivener.Ecto.Repo, :manual)
+
 ExUnit.start()

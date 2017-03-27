@@ -129,6 +129,40 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
+    test "can be provided the caller as options" do
+      create_posts()
+      parent = self()
+
+      task = Task.async(fn ->
+        Post
+        |> Scrivener.Ecto.Repo.paginate(caller: parent)
+      end)
+
+      page = Task.await(task)
+
+      assert page.page_size == 5
+      assert page.page_number == 1
+      assert page.total_entries == 7
+      assert page.total_pages == 2
+    end
+
+    test "can be provided the caller as a map" do
+      create_posts()
+      parent = self()
+
+      task = Task.async(fn ->
+        Post
+        |> Scrivener.Ecto.Repo.paginate(%{"caller" => parent})
+      end)
+
+      page = Task.await(task)
+
+      assert page.page_size == 5
+      assert page.page_number == 1
+      assert page.total_entries == 7
+      assert page.total_pages == 2
+    end
+
     test "will respect the max_page_size configuration" do
       page =
         Post
