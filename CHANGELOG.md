@@ -1,6 +1,8 @@
 # Changelog
 
-## 1.2.0-dev
+## 1.2.0
+
+* Supply `caller` when executing queries
 
 ## 1.1.4
 
