@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.3.0-dev
+
 ## 1.2.0
 
 * Supply `caller` when executing queries
