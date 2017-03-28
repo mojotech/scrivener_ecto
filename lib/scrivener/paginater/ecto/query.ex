@@ -40,6 +40,7 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     total_entries || 0
   end
 
+  defp total_pages(0, _), do: 1
   defp total_pages(total_entries, page_size) do
     (total_entries / page_size) |> Float.ceil |> round
   end
