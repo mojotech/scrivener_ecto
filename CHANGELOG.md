@@ -2,6 +2,10 @@
 
 ## 1.3.0-dev
 
+## 1.2.1
+
+* Return `total_pages` of `1` when there are no results
+
 ## 1.2.0
 
 * Supply `caller` when executing queries
