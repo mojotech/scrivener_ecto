@@ -47,6 +47,15 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
+    test "page information is correct with no results" do
+      page = Post |> Scrivener.Ecto.Repo.paginate
+
+      assert page.page_size == 5
+      assert page.page_number == 1
+      assert page.total_entries == 0
+      assert page.total_pages == 1
+    end
+
     test "uses defaults from the repo" do
       posts = create_posts()
 
