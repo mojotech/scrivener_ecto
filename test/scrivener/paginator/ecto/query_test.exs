@@ -26,6 +26,68 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     end)
   end
 
+  defp create_posts_with_comments do
+      post_1 = %Post{title: "Title 1", body: "Body 1", published: true}
+      |> Scrivener.Ecto.Repo.insert!
+      post_2 = %Post{title: "Title 2", body: "Body 2", published: true}
+      |> Scrivener.Ecto.Repo.insert!
+      post_3 = %Post{title: "Title 3", body: "Body 3", published: true}
+      |> Scrivener.Ecto.Repo.insert!
+      post_4 = %Post{title: "Title 4", body: "Body 4", published: true}
+      |> Scrivener.Ecto.Repo.insert!
+      post_5 = %Post{title: "Title 5", body: "Body 5", published: true}
+      |> Scrivener.Ecto.Repo.insert!
+      post_6 = %Post{title: "Title 6", body: "Body 6", published: true}
+      |> Scrivener.Ecto.Repo.insert!
+      post_7 = %Post{title: "Title 7", body: "Body 7", published: true}
+      |> Scrivener.Ecto.Repo.insert!
+
+      %Comment{body: "Belongs to post_1", post_id: post_1.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_2", post_id: post_2.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_2", post_id: post_2.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_3", post_id: post_3.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_3", post_id: post_3.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_3", post_id: post_3.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_4", post_id: post_4.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_4", post_id: post_4.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_4", post_id: post_4.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_4", post_id: post_4.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_5", post_id: post_5.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_5", post_id: post_5.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_5", post_id: post_5.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_5", post_id: post_5.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_5", post_id: post_5.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_6", post_id: post_6.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_6", post_id: post_6.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_6", post_id: post_6.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_6", post_id: post_6.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_6", post_id: post_6.id}
+      |> Scrivener.Ecto.Repo.insert!
+      %Comment{body: "Belongs to post_6", post_id: post_6.id}
+      |> Scrivener.Ecto.Repo.insert!
+
+     post_1.id
+  end
+
   defp create_key_values do
     Enum.map(1..10, fn i ->
       %KeyValue{
@@ -36,6 +98,26 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
   end
 
   describe "paginate" do
+    test "paginates with last_seen_id" do
+      last_seen_id = create_posts_with_comments()
+
+      query =
+        from p in Post,
+        left_join: c in assoc(p, :comments),
+        order_by: [desc: count(c.id)],
+        group_by: p.id,
+        select: p
+
+      # Test the sort order:
+      # Page 1: Body 6, Body 5, Body 4, Body 3, Body 2
+      # Page 2: Body 1, Body 7
+
+      page = Scrivener.Ecto.Repo.paginate(query, %{"page" => 1})
+      assert List.first(page.entries).body == "Body 6"
+      page = Scrivener.Ecto.Repo.paginate(query, %{"page" => 2, "last_seen_id" => last_seen_id})
+      assert List.first(page.entries).body == "Body 1"
+    end
+
     test "paginates an unconstrained query" do
       create_posts()
 
@@ -211,7 +293,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       config = %Scrivener.Config{
         module: Scrivener.Ecto.Repo,
         page_number: 2,
-        page_size: 4
+        page_size: 4,
+        last_seen_id: 0
       }
 
       page =

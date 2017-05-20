@@ -41,7 +41,7 @@ defmodule Scrivener.Ecto.Mixfile do
 
   defp deps do
     [
-      {:scrivener, "~> 2.3"},
+      {:scrivener, "~> 2.4.0-dev", git: "https://github.com/egeersoz/scrivener.git"},
       {:ecto, "~> 2.0"},
       {:dialyxir, "~> 0.5.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev},
