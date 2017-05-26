@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+
+* Require Elixir `~> 1.3`
+
 ## 1.2.1
 
 * Return `total_pages` of `1` when there are no results
