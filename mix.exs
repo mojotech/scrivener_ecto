@@ -5,7 +5,7 @@ defmodule Scrivener.Ecto.Mixfile do
     [
       app: :scrivener_ecto,
       version: "1.3.0-dev",
-      elixir: "~> 1.2",
+      elixir: "~> 1.3",
       elixirc_paths: elixirc_paths(Mix.env),
       package: package(),
       description: "Paginate your Ecto queries with Scrivener",
