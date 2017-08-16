@@ -31,8 +31,8 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     total_entries =
       query
       |> exclude(:preload)
-      |> prepare_select
       |> exclude(:order_by)
+      |> prepare_select
       |> subquery
       |> select(count("*"))
       |> repo.one(caller: caller)
@@ -40,23 +40,28 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     total_entries || 0
   end
 
-  defp prepare_select(%{group_bys: group_bys} = query) when length(group_bys) > 0 do
-    group_by_fields =
-      group_bys
-      |> Enum.flat_map(fn %Ecto.Query.QueryExpr{expr: expr}->
-        expr
-        |> Enum.map(fn {{:., [], [{:&, [], [_]}, field]}, [], []} ->
-          field
-        end)
-      end)
-
-    query
-    |> exclude(:select)
-    |> select(^group_by_fields)
-  end
   defp prepare_select(query) do
-    query
-    |> exclude(:select)
+    try do
+      query
+      |> subquery
+      |> select(count("*"))
+      |> Ecto.Query.Planner.prepare_sources(_adapter = nil)
+
+      query
+    rescue
+      e in Ecto.SubQueryError ->
+        case e do
+          %{
+            exception: %{
+              message: "subquery must select a source (t), a field (t.field) or a map" <> _rest
+            }
+          } ->
+            query
+            |> exclude(:select)
+          _ ->
+            raise e
+        end
+    end
   end
 
   defp total_pages(0, _), do: 1
