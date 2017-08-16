@@ -31,13 +31,32 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     total_entries =
       query
       |> exclude(:preload)
-      |> exclude(:select)
+      |> prepare_select
       |> exclude(:order_by)
       |> subquery
       |> select(count("*"))
       |> repo.one(caller: caller)
 
     total_entries || 0
+  end
+
+  defp prepare_select(%{group_bys: group_bys} = query) when length(group_bys) > 0 do
+    group_by_fields =
+      group_bys
+      |> Enum.flat_map(fn %Ecto.Query.QueryExpr{expr: expr}->
+        expr
+        |> Enum.map(fn {{:., [], [{:&, [], [_]}, field]}, [], []} ->
+          field
+        end)
+      end)
+
+    query
+    |> exclude(:select)
+    |> select(^group_by_fields)
+  end
+  defp prepare_select(query) do
+    query
+    |> exclude(:select)
   end
 
   defp total_pages(0, _), do: 1
