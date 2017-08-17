@@ -39,27 +39,24 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     total_entries || 0
   end
 
+  defp prepare_select(
+    %{
+      group_bys: [
+        %Ecto.Query.QueryExpr{
+          expr: [
+            {{:., [], [{:&, [], [source_index]}, field]}, [], []} | _
+          ]
+        } | _
+      ]
+    } = query
+  ) do
+    query
+    |> exclude(:select)
+    |> select([x: source_index], struct(x, ^[field]))
+  end
   defp prepare_select(query) do
-    try do
-      query
-      |> count
-      |> Ecto.Query.Planner.prepare_sources(nil)
-
-      query
-    rescue
-      e in Ecto.SubQueryError ->
-        case e do
-          %{
-            exception: %{
-              message: "subquery must select a source (t), a field (t.field) or a map" <> _rest
-            }
-          } ->
-            query
-            |> exclude(:select)
-          _ ->
-            raise e
-        end
-    end
+    query
+    |> exclude(:select)
   end
 
   defp count(query) do

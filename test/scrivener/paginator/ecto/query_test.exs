@@ -224,7 +224,20 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         Post
         |> join(:inner, [p], c in assoc(p, :comments))
         |> group_by([p, c], c.body)
-        |> select([p, c], (c.body))
+        |> select([p, c], ({c.body, count("*")}))
+        |> Scrivener.Ecto.Repo.paginate
+
+      assert page.total_entries == 2
+    end
+
+    test "can be used with compound group by clause" do
+      create_posts()
+
+      page =
+        Post
+        |> join(:inner, [p], c in assoc(p, :comments))
+        |> group_by([p, c], [c.body, p.title])
+        |> select([p, c], ({c.body, p.title, count("*")}))
         |> Scrivener.Ecto.Repo.paginate
 
       assert page.total_entries == 2
