@@ -31,13 +31,37 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     total_entries =
       query
       |> exclude(:preload)
-      |> exclude(:select)
       |> exclude(:order_by)
+      |> prepare_select
       |> subquery
       |> select(count("*"))
       |> repo.one(caller: caller)
 
     total_entries || 0
+  end
+
+  defp prepare_select(query) do
+    try do
+      query
+      |> subquery
+      |> select(count("*"))
+      |> Ecto.Query.Planner.prepare_sources(_adapter = nil)
+
+      query
+    rescue
+      e in Ecto.SubQueryError ->
+        case e do
+          %{
+            exception: %{
+              message: "subquery must select a source (t), a field (t.field) or a map" <> _rest
+            }
+          } ->
+            query
+            |> exclude(:select)
+          _ ->
+            raise e
+        end
+    end
   end
 
   defp total_pages(0, _), do: 1
