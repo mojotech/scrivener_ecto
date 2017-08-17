@@ -33,8 +33,7 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
       |> exclude(:preload)
       |> exclude(:order_by)
       |> prepare_select
-      |> subquery
-      |> select(count("*"))
+      |> count
       |> repo.one(caller: caller)
 
     total_entries || 0
@@ -43,9 +42,8 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
   defp prepare_select(query) do
     try do
       query
-      |> subquery
-      |> select(count("*"))
-      |> Ecto.Query.Planner.prepare_sources(_adapter = nil)
+      |> count
+      |> Ecto.Query.Planner.prepare_sources(nil)
 
       query
     rescue
@@ -62,6 +60,12 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
             raise e
         end
     end
+  end
+
+  defp count(query) do
+    query
+    |> subquery
+    |> select(count("*"))
   end
 
   defp total_pages(0, _), do: 1
