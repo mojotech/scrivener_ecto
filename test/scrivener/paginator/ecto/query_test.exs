@@ -181,6 +181,21 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.page_size == 10
     end
 
+    test "will respect the total_entries configuration" do
+      config = %Scrivener.Config{
+        module: Scrivener.Ecto.Repo,
+        page_number: 2,
+        page_size: 4,
+        options: [total_entries: 130]
+      }
+      page =
+        Post
+        |> Post.published
+        |> Scrivener.paginate(config)
+
+      assert page.total_entries == 130
+    end
+
     test "can be used on a table with any primary key" do
       create_key_values()
 
