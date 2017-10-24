@@ -8,7 +8,7 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
   @spec paginate(Ecto.Query.t, Scrivener.Config.t) :: Scrivener.Page.t
   def paginate(query, %Config{page_size: page_size, page_number: page_number, module: repo, caller: caller, options: options}) do
     options = options || []
-    total_entries = Keyword.get(options, :total_entries, total_entries(query, repo, caller))
+    total_entries = options[:total_entries] || total_entries(query, repo, caller)
     
     %Page{
       page_size: page_size,
