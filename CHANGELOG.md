@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.4.0-dev
+
 ## 1.3.0
 
 * Allow directly specifying `total_entries`
