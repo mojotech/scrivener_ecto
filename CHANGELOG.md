@@ -2,6 +2,8 @@
 
 ## 1.3.0-dev
 
+* Allow directly specifying `total_entries`
+
 ## 1.2.3
 
 * Handle complex group by statements in `total_entries`
