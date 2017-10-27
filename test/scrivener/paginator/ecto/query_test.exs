@@ -157,6 +157,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
     test "can be provided the caller as a map" do
       create_posts()
+
       parent = self()
 
       task = Task.async(fn ->
@@ -173,6 +174,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     end
 
     test "will respect the max_page_size configuration" do
+      create_posts()
+
       page =
         Post
         |> Post.published
@@ -182,16 +185,30 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     end
 
     test "will respect the total_entries configuration" do
+      create_posts()
+
       config = %Scrivener.Config{
         module: Scrivener.Ecto.Repo,
         page_number: 2,
         page_size: 4,
         options: [total_entries: 130]
       }
+
       page =
         Post
         |> Post.published
         |> Scrivener.paginate(config)
+
+      assert page.total_entries == 130
+    end
+
+    test "will respect total_entries passed to paginate" do
+      create_posts()
+
+      page =
+        Post
+        |> Post.published
+        |> Scrivener.Ecto.Repo.paginate(options: [total_entries: 130])
 
       assert page.total_entries == 130
     end
@@ -264,7 +281,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       config = %Scrivener.Config{
         module: Scrivener.Ecto.Repo,
         page_number: 2,
-        page_size: 4
+        page_size: 4,
+        options: []
       }
 
       page =
