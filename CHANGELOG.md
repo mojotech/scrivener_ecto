@@ -2,6 +2,8 @@
 
 ## 1.4.0-dev
 
+* Don't allow `page_number` to be greater than `total_pages`
+
 ## 1.3.0
 
 * Allow directly specifying `total_entries`
