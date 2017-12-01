@@ -1,20 +1,20 @@
 defmodule Scrivener.Paginator.Ecto.QueryTest do
   use Scrivener.Ecto.TestCase
-
+  require Logger
   alias Scrivener.Ecto.{Comment, KeyValue, Post}
 
-  defp create_posts do
+  defp create_posts(tenant_prefix \\ []) do
     unpublished_post = %Post{
       title: "Title unpublished",
       body: "Body unpublished",
       published: false
-    } |> Scrivener.Ecto.Repo.insert!
+    } |> optional_prefix_insert(tenant_prefix)
 
     Enum.map(1..2, fn i ->
       %Comment{
         body: "Body #{i}",
         post_id: unpublished_post.id
-      } |> Scrivener.Ecto.Repo.insert!
+      } |> optional_prefix_insert(tenant_prefix)
     end)
 
     Enum.map(1..6, fn i ->
@@ -22,17 +22,46 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         title: "Title #{i}",
         body: "Body #{i}",
         published: true
-      } |> Scrivener.Ecto.Repo.insert!
+      } |> optional_prefix_insert(tenant_prefix)
     end)
   end
 
-  defp create_key_values do
+  defp create_key_values(tenant_prefix \\ []) do
     Enum.map(1..10, fn i ->
       %KeyValue{
         key: "key_#{i}",
         value: (rem(i, 2) |> to_string)
-      } |> Scrivener.Ecto.Repo.insert!
+      } |> optional_prefix_insert(tenant_prefix)
     end)
+  end
+
+  defp optional_prefix_insert(data, tenant_prefix) do
+    case tenant_prefix do
+      [] -> data |> Scrivener.Ecto.Repo.insert!
+      _ -> data |> Scrivener.Ecto.Repo.insert!(prefix: tenant_prefix)
+    end
+  end
+
+  defp create_schema(schema_name) do
+    sql = "CREATE SCHEMA #{schema_name}"
+    with {:ok, _} <- Ecto.Adapters.SQL.query(Scrivener.Ecto.Repo, sql, []) do {:ok, schema_name} end
+
+    Ecto.Migrator.run(Scrivener.Ecto.Repo,
+                      migrations_path(Scrivener.Ecto.Repo),
+                      :up,
+                      all: true,
+                      prefix: schema_name)
+  end
+
+  defp migrations_path(repo) do
+    path =
+      repo.config()
+      |> Keyword.get(:priv, "priv/#{repo |> Module.split |> List.last |> Macro.underscore}")
+      |> Path.join("migrations")
+
+    repo.config()
+    |> Keyword.get(:otp_app)
+    |> Application.app_dir(path)
   end
 
   describe "paginate" do
@@ -341,6 +370,57 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.page_number == 2
       assert page.entries == Enum.drop(posts, 4)
       assert page.total_pages == 2
+    end
+
+    test "can specify prefix" do
+      schema_tenant_1 = "tenant_1"
+      tenant1 = create_schema(schema_tenant_1)
+      assert tenant1 == [1, 2, 3]
+
+      schema_tenant_2 = "tenant_2"
+      tenant2 = create_schema(schema_tenant_2)
+      assert tenant2 == [1, 2, 3]
+
+      create_posts(schema_tenant_1)
+      page_tenant_1 =
+          Post
+          |> Scrivener.Ecto.Repo.paginate(options: [prefix: schema_tenant_1])
+
+      %Post{
+        title: "One post in second tenant",
+        body: "Second tenant post",
+        published: true
+      } |> optional_prefix_insert(schema_tenant_2)
+      page_tenant_2 =
+          Post
+          |> Scrivener.Ecto.Repo.paginate(options: [prefix: schema_tenant_2])
+
+      assert page_tenant_1.total_entries == 7
+      assert page_tenant_1.page_number == 1
+      assert length(page_tenant_1.entries) == 5
+
+      assert page_tenant_2.total_entries == 1
+      assert page_tenant_2.page_number == 1
+      assert length(page_tenant_2.entries) == 1
+
+      #posts = create_posts()
+
+      # config = %Scrivener.Config{
+      #   module: Scrivener.Ecto.Repo,
+      #   page_number: 2,
+      #   page_size: 4,
+      #   options: []
+      # }
+      #
+      # page =
+      #   Post
+      #   |> Post.published
+      #   |> Scrivener.paginate(config)
+      #
+      # assert page.page_size == 4
+      # assert page.page_number == 2
+      # assert page.entries == Enum.drop(posts, 4)
+      # assert page.total_pages == 2
     end
   end
 end
