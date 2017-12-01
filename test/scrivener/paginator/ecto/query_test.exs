@@ -402,25 +402,6 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page_tenant_2.total_entries == 1
       assert page_tenant_2.page_number == 1
       assert length(page_tenant_2.entries) == 1
-
-      #posts = create_posts()
-
-      # config = %Scrivener.Config{
-      #   module: Scrivener.Ecto.Repo,
-      #   page_number: 2,
-      #   page_size: 4,
-      #   options: []
-      # }
-      #
-      # page =
-      #   Post
-      #   |> Post.published
-      #   |> Scrivener.paginate(config)
-      #
-      # assert page.page_size == 4
-      # assert page.page_number == 2
-      # assert page.entries == Enum.drop(posts, 4)
-      # assert page.total_pages == 2
     end
   end
 end
