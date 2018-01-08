@@ -4,26 +4,35 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
   alias Scrivener.Ecto.{Comment, KeyValue, Post}
 
   defp create_posts do
-    unpublished_post = %Post{
-      title: "Title unpublished",
-      body: "Body unpublished",
-      published: false
+    unpublished_post = insert_new_post!("Title unpublished", "Body unpublished", false)
+
+    for i <- 1..2, do: insert_new_comment!("Body #{i}", unpublished_post.id)
+
+    for i <- 1..6, do: insert_new_post!("Title #{i}", "Body #{i}")
+  end
+
+  defp create_multiple_posts_and_comments do
+    for i <- 1..6 do
+      post = insert_new_post!("Title #{i}", "Body #{i}")
+      for j <- 1..5 do
+        insert_new_comment!("Body #{i}-#{j}", post.id)
+      end
+    end
+  end
+
+  defp insert_new_comment!(body, post_id) do
+    %Comment{
+      body: body,
+      post_id: post_id
     } |> Scrivener.Ecto.Repo.insert!
+  end
 
-    Enum.map(1..2, fn i ->
-      %Comment{
-        body: "Body #{i}",
-        post_id: unpublished_post.id
-      } |> Scrivener.Ecto.Repo.insert!
-    end)
-
-    Enum.map(1..6, fn i ->
-      %Post{
-        title: "Title #{i}",
-        body: "Body #{i}",
-        published: true
-      } |> Scrivener.Ecto.Repo.insert!
-    end)
+  defp insert_new_post!(title, body, published \\ true) do
+    %Post{
+      title: title,
+      body: body,
+      published: published
+    } |> Scrivener.Ecto.Repo.insert!
   end
 
   defp create_key_values do
@@ -342,5 +351,21 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.entries == Enum.drop(posts, 4)
       assert page.total_pages == 2
     end
+
+    test "handles joins with preloads properly" do
+      create_multiple_posts_and_comments()
+
+      page =
+        Post
+        |> Post.published
+        |> join(:inner, [p], c in assoc(p, :comments))
+        |> preload([p, c], [comments: c])
+        |> Scrivener.Ecto.Repo.paginate
+
+      assert page.total_entries == 6
+      assert page.page_size == 5
+      assert page.total_pages == 2
+    end
+
   end
 end
