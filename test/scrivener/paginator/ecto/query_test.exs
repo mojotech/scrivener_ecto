@@ -4,17 +4,20 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
   alias Scrivener.Ecto.{Comment, KeyValue, Post}
 
   defp create_posts do
-    unpublished_post = %Post{
-      title: "Title unpublished",
-      body: "Body unpublished",
-      published: false
-    } |> Scrivener.Ecto.Repo.insert!
+    unpublished_post =
+      %Post{
+        title: "Title unpublished",
+        body: "Body unpublished",
+        published: false
+      }
+      |> Scrivener.Ecto.Repo.insert!()
 
     Enum.map(1..2, fn i ->
       %Comment{
         body: "Body #{i}",
         post_id: unpublished_post.id
-      } |> Scrivener.Ecto.Repo.insert!
+      }
+      |> Scrivener.Ecto.Repo.insert!()
     end)
 
     Enum.map(1..6, fn i ->
@@ -22,7 +25,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         title: "Title #{i}",
         body: "Body #{i}",
         published: true
-      } |> Scrivener.Ecto.Repo.insert!
+      }
+      |> Scrivener.Ecto.Repo.insert!()
     end)
   end
 
@@ -30,8 +34,9 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     Enum.map(1..10, fn i ->
       %KeyValue{
         key: "key_#{i}",
-        value: (rem(i, 2) |> to_string)
-      } |> Scrivener.Ecto.Repo.insert!
+        value: rem(i, 2) |> to_string
+      }
+      |> Scrivener.Ecto.Repo.insert!()
     end)
   end
 
@@ -39,7 +44,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     test "paginates an unconstrained query" do
       create_posts()
 
-      page = Post |> Scrivener.Ecto.Repo.paginate
+      page = Post |> Scrivener.Ecto.Repo.paginate()
 
       assert page.page_size == 5
       assert page.page_number == 1
@@ -48,7 +53,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     end
 
     test "page information is correct with no results" do
-      page = Post |> Scrivener.Ecto.Repo.paginate
+      page = Post |> Scrivener.Ecto.Repo.paginate()
 
       assert page.page_size == 5
       assert page.page_number == 1
@@ -61,8 +66,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
-        |> Scrivener.Ecto.Repo.paginate
+        |> Post.published()
+        |> Scrivener.Ecto.Repo.paginate()
 
       assert page.page_size == 5
       assert page.page_number == 1
@@ -76,9 +81,9 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> preload(:comments)
-        |> Scrivener.Ecto.Repo.paginate
+        |> Scrivener.Ecto.Repo.paginate()
 
       assert page.page_size == 5
       assert page.page_number == 1
@@ -93,7 +98,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         |> join(:left, [p], c in assoc(p, :comments))
         |> group_by([p], p.id)
         |> select([p], sum(p.id))
-        |> Scrivener.Ecto.Repo.paginate
+        |> Scrivener.Ecto.Repo.paginate()
 
       assert page.total_entries == 7
     end
@@ -105,7 +110,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         Post
         |> select([p], fragment("? as aliased_title", p.title))
         |> order_by([p], fragment("aliased_title"))
-        |> Scrivener.Ecto.Repo.paginate
+        |> Scrivener.Ecto.Repo.paginate()
 
       assert page.total_entries == 7
     end
@@ -115,7 +120,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.Ecto.Repo.paginate(%{"page" => "2", "page_size" => "3"})
 
       assert page.page_size == 3
@@ -129,7 +134,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.Ecto.Repo.paginate(page: 2, page_size: 3)
 
       assert page.page_size == 3
@@ -142,10 +147,11 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       create_posts()
       parent = self()
 
-      task = Task.async(fn ->
-        Post
-        |> Scrivener.Ecto.Repo.paginate(caller: parent)
-      end)
+      task =
+        Task.async(fn ->
+          Post
+          |> Scrivener.Ecto.Repo.paginate(caller: parent)
+        end)
 
       page = Task.await(task)
 
@@ -160,10 +166,11 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       parent = self()
 
-      task = Task.async(fn ->
-        Post
-        |> Scrivener.Ecto.Repo.paginate(%{"caller" => parent})
-      end)
+      task =
+        Task.async(fn ->
+          Post
+          |> Scrivener.Ecto.Repo.paginate(%{"caller" => parent})
+        end)
 
       page = Task.await(task)
 
@@ -178,7 +185,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.Ecto.Repo.paginate(%{"page" => "1", "page_size" => "20"})
 
       assert page.page_size == 10
@@ -196,7 +203,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.paginate(config)
 
       assert page.total_entries == 130
@@ -207,7 +214,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.Ecto.Repo.paginate(options: [total_entries: 130])
 
       assert page.total_entries == 130
@@ -225,7 +232,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.paginate(config)
 
       assert page.page_number == 1
@@ -237,7 +244,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         KeyValue
-        |> KeyValue.zero
+        |> KeyValue.zero()
         |> Scrivener.Ecto.Repo.paginate(page_size: 2)
 
       assert page.total_entries == 5
@@ -251,7 +258,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         Post
         |> join(:left, [p], c in assoc(p, :comments))
         |> group_by([p], p.id)
-        |> Scrivener.Ecto.Repo.paginate
+        |> Scrivener.Ecto.Repo.paginate()
 
       assert page.total_entries == 7
     end
@@ -262,8 +269,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       page =
         Post
         |> group_by([p], p.body)
-        |> select([p], (p.body))
-        |> Scrivener.Ecto.Repo.paginate
+        |> select([p], p.body)
+        |> Scrivener.Ecto.Repo.paginate()
 
       assert page.total_entries == 7
     end
@@ -275,8 +282,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         Post
         |> join(:inner, [p], c in assoc(p, :comments))
         |> group_by([p, c], c.body)
-        |> select([p, c], ({c.body, count("*")}))
-        |> Scrivener.Ecto.Repo.paginate
+        |> select([p, c], {c.body, count("*")})
+        |> Scrivener.Ecto.Repo.paginate()
 
       assert page.total_entries == 2
     end
@@ -288,8 +295,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         Post
         |> join(:inner, [p], c in assoc(p, :comments))
         |> group_by([p, c], [c.body, p.title])
-        |> select([p, c], ({c.body, p.title, count("*")}))
-        |> Scrivener.Ecto.Repo.paginate
+        |> select([p, c], {c.body, p.title, count("*")})
+        |> Scrivener.Ecto.Repo.paginate()
 
       assert page.total_entries == 2
     end
@@ -306,7 +313,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.paginate(config)
 
       assert page.page_size == 4
@@ -320,7 +327,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.paginate(module: Scrivener.Ecto.Repo, page: 2, page_size: 4)
 
       assert page.page_size == 4
@@ -334,7 +341,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published
+        |> Post.published()
         |> Scrivener.paginate(%{"module" => Scrivener.Ecto.Repo, "page" => 2, "page_size" => 4})
 
       assert page.page_size == 4

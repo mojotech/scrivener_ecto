@@ -8,5 +8,4 @@ config :scrivener_ecto, Scrivener.Ecto.Repo,
   database: "scrivener_test",
   username: System.get_env("SCRIVENER_ECTO_DB_USER") || System.get_env("USER")
 
-config :logger, :console,
-  level: :error
+config :logger, :console, level: :error

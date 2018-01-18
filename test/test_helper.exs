@@ -1,7 +1,7 @@
 defmodule Scrivener.Ecto.TestCase do
   use ExUnit.CaseTemplate
 
-  using(opts) do
+  using opts do
     quote do
       use ExUnit.Case, unquote(opts)
       import Ecto.Query
@@ -13,7 +13,7 @@ defmodule Scrivener.Ecto.TestCase do
   end
 end
 
-Scrivener.Ecto.Repo.start_link
+Scrivener.Ecto.Repo.start_link()
 Ecto.Adapters.SQL.Sandbox.mode(Scrivener.Ecto.Repo, :manual)
 
 ExUnit.start()

@@ -4,11 +4,11 @@ defmodule Scrivener.Ecto.Post do
   import Ecto.Query
 
   schema "posts" do
-    field :title, :string
-    field :body, :string
-    field :published, :boolean
+    field(:title, :string)
+    field(:body, :string)
+    field(:published, :boolean)
 
-    has_many :comments, Scrivener.Ecto.Comment
+    has_many(:comments, Scrivener.Ecto.Comment)
 
     timestamps()
   end

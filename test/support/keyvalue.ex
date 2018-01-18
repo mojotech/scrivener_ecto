@@ -6,7 +6,7 @@ defmodule Scrivener.Ecto.KeyValue do
   @primary_key {:key, :string, autogenerate: false}
 
   schema "key_values" do
-    field :value, :string
+    field(:value, :string)
   end
 
   def zero(query) do
