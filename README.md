@@ -59,6 +59,52 @@ page =
   |> MyApp.Repo.paginate(page: 2, page_size: 5)
 ```
 
+### More Examples
+
+Simple paginate query based of the generated boiler plate `list_your_resource` function that the Phoenix Framework Generators create
+
+```elixir
+  alias  MyApp.Person
+  ...
+  
+  @doc """
+  Returns the list of people by page.
+
+  ## Examples
+
+      list_people_page(_params)
+      [%Person{}, ...]
+
+  """
+  def list_people_page(params) do
+    Repo.paginate(Person, params)
+  end
+  ```
+  
+Slightly more complex query that uses an Ecto query string  
+  
+```elixir
+  
+  alias  MyApp.Person
+  ...
+  
+  @doc """
+  Returns the list of people by page descending.
+
+  ## Examples
+
+      list_people_page_desc(_params)
+      [%Person{}, ...]
+
+  """
+  def list_people_page_desc(params) do
+    query = from(p in Person, order_by: [desc: :inserted_at])
+    Repo.paginate(query, params)
+  end
+  
+```  
+
+
 ## Installation
 
 Add `scrivener_ecto` to your `mix.exs` `applications` and `dependencies`.
