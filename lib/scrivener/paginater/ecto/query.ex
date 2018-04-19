@@ -51,19 +51,24 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
 
   defp prepare_select(
          %{
-           group_bys: [
-             %Ecto.Query.QueryExpr{
-               expr: [
-                 {{:., [], [{:&, [], [source_index]}, field]}, [], []} | _
-               ]
-             }
-             | _
-           ]
+           select: %{
+             expr: {:{}, [], [expr | _]}
+           } = selectX
          } = query
        ) do
-    query
-    |> exclude(:select)
-    |> select([x: source_index], struct(x, ^[field]))
+
+    %{query |> exclude(:select) | select: %{ selectX | expr: expr }}
+  end
+
+  defp prepare_select(
+    %{
+      group_bys: [
+        %Ecto.Query.QueryExpr{ expr: [expr] }
+      ],
+      select: %{} = select
+    } = query) do
+
+    %{query |> exclude(:select) | select: %{ select | expr: expr }}
   end
 
   defp prepare_select(query) do
