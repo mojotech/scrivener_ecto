@@ -22,14 +22,14 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     %Page{
       page_size: page_size,
       page_number: page_number,
-      entries: entries(query, repo, page_number, page_size, caller),
+      entries: entries(query, repo, page_number, page_size, caller, options),
       total_entries: total_entries,
       total_pages: total_pages
     }
   end
 
-  defp entries(query, repo, page_number, page_size, caller) do
-    offset = page_size * (page_number - 1)
+  defp entries(query, repo, page_number, page_size, caller, options \\ []) do
+    offset = if options[:offset] != nil, do: options[:offset], else: page_size * (page_number - 1)
 
     query
     |> limit(^page_size)
