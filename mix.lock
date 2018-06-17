@@ -1,5 +1,5 @@
 %{
-  "connection": {:hex, :connection, "1.0.4", "a1cae72211f0eef17705aaededacac3eb30e6625b04a6117c1b2db6ace7d5976", [], [], "hexpm"},
+  "connection": {:hex, :connection, "1.0.4", "a1cae72211f0eef17705aaededacac3eb30e6625b04a6117c1b2db6ace7d5976", [:mix], [], "hexpm"},
   "db_connection": {:hex, :db_connection, "1.1.3", "89b30ca1ef0a3b469b1c779579590688561d586694a3ce8792985d4d7e575a61", [:mix], [{:connection, "~> 1.0.2", [hex: :connection, repo: "hexpm", optional: false]}, {:poolboy, "~> 1.5", [hex: :poolboy, repo: "hexpm", optional: true]}, {:sbroker, "~> 1.0", [hex: :sbroker, repo: "hexpm", optional: true]}], "hexpm"},
   "decimal": {:hex, :decimal, "1.4.1", "ad9e501edf7322f122f7fc151cce7c2a0c9ada96f2b0155b8a09a795c2029770", [:mix], [], "hexpm"},
   "dialyxir": {:hex, :dialyxir, "0.5.1", "b331b091720fd93e878137add264bac4f644e1ddae07a70bf7062c7862c4b952", [:mix], [], "hexpm"},
