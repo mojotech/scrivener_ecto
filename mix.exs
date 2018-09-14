@@ -46,7 +46,7 @@ defmodule Scrivener.Ecto.Mixfile do
       {:dialyxir, "~> 0.5.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev},
       {:ex_doc, "~> 0.18.0", only: :dev},
-      {:postgrex, "~> 0.14.0-dev", override: true, github: "elixir-ecto/postgrex"}
+      {:postgrex, "~> 0.14.0-dev", github: "elixir-ecto/postgrex", ref: "6cabc3b"}
     ]
   end
 
