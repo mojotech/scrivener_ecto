@@ -63,7 +63,7 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
        ) do
     query
     |> exclude(:select)
-    |> select([x: source_index], struct(x, ^[field]))
+    |> select([{x, source_index}], struct(x, ^[field]))
   end
 
   defp prepare_select(query) do

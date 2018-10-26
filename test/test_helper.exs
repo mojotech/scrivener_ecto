@@ -10,6 +10,7 @@ defmodule Scrivener.Ecto.TestCase do
 
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Scrivener.Ecto.Repo)
+    Ecto.Adapters.SQL.Sandbox.mode(Scrivener.Ecto.Repo, {:shared, self()})
   end
 end
 
