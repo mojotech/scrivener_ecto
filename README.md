@@ -70,7 +70,7 @@ end
 ```
 
 ```elixir
-[{:scrivener_ecto, "~> 1.0"}]
+[{:scrivener_ecto, "~> 2.0"}]
 ```
 
 ## Contributing
