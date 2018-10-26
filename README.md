@@ -14,7 +14,7 @@ Note: Scrivener.Ecto only supports Ecto backends that allow subqueries (e.g. Pos
 
 ```elixir
 defmodule MyApp.Repo do
-  use Ecto.Repo, otp_app: :my_app
+  use Ecto.Repo, otp_app: :my_app, adapter: Ecto.Adapters.Postgres
   use Scrivener, page_size: 10
 end
 ```
