@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.4.0-dev
+## 2.0.0-dev
 
 * Don't allow `page_number` to be greater than `total_pages`
+* Support Ecto 3.0
 
 ## 1.3.0
 
