@@ -42,12 +42,12 @@ defmodule Scrivener.Ecto.Mixfile do
   defp deps do
     [
       {:scrivener, "~> 2.4"},
-      {:ecto, "~> 3.0-rc"},
-      {:ecto_sql, "~> 3.0-rc"},
+      {:ecto, "~> 3.0"},
+      {:ecto_sql, "~> 3.0-rc", only: :test},
       {:dialyxir, "~> 0.5.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev},
-      {:ex_doc, "~> 0.18.0", only: :dev},
-      {:postgrex, "~> 0.14.0-rc"}
+      {:ex_doc, "~> 0.19.0", only: :dev},
+      {:postgrex, "~> 0.14.0", only: :test}
     ]
   end
 
