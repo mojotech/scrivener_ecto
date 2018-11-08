@@ -42,14 +42,13 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
       query
       |> exclude(:preload)
       |> exclude(:order_by)
-      |> prepare_select
-      |> count
+      |> aggregate()
       |> repo.one(caller: caller)
 
     total_entries || 0
   end
 
-  defp prepare_select(
+  defp aggregate(
          %{
            group_bys: [
              %Ecto.Query.QueryExpr{
@@ -64,11 +63,13 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     query
     |> exclude(:select)
     |> select([{x, source_index}], struct(x, ^[field]))
+    |> count()
   end
 
-  defp prepare_select(query) do
+  defp aggregate(query) do
     query
     |> exclude(:select)
+    |> select(count("*"))
   end
 
   defp count(query) do
