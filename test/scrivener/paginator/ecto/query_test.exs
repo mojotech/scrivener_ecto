@@ -90,6 +90,21 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_pages == 2
     end
 
+    test "it handles offsets" do
+      create_posts()
+
+      page =
+        Post
+        |> Post.published()
+        |> preload(:comments)
+        |> Scrivener.Ecto.Repo.paginate(options: [offset: 1])
+
+      assert page.page_size == 4
+      assert page.entries |> length == 4
+      assert page.page_number == 1
+      assert page.total_pages == 2
+    end
+
     test "it handles complex selects" do
       create_posts()
 
