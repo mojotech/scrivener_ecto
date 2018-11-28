@@ -95,11 +95,18 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
       page =
         Post
-        |> Post.published()
-        |> preload(:comments)
+        |> Post.unpublished()
         |> Scrivener.Ecto.Repo.paginate(options: [offset: 1])
 
-      assert page.page_size == 4
+      assert page.entries |> length == 0
+      assert page.page_number == 1
+      assert page.total_pages == 1
+
+      page =
+        Post
+        |> Post.published()
+        |> Scrivener.Ecto.Repo.paginate(options: [offset: 2])
+
       assert page.entries |> length == 4
       assert page.page_number == 1
       assert page.total_pages == 2
