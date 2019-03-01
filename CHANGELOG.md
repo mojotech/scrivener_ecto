@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0-dev
+## 2.1.0
 
 * Optimize `total_entries` for queries without group by clauses
 * Allow directly specifying `offset`
