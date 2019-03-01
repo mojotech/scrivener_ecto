@@ -22,18 +22,18 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     %Page{
       page_size: page_size,
       page_number: page_number,
-      entries: entries(query, repo, page_number, page_size, caller),
+      entries: entries(query, repo, page_number, page_size, caller, options),
       total_entries: total_entries,
       total_pages: total_pages
     }
   end
 
-  defp entries(query, repo, page_number, page_size, caller) do
-    offset = page_size * (page_number - 1)
+  defp entries(query, repo, page_number, page_size, caller, options) do
+    offset = Keyword.get_lazy(options, :offset, fn -> page_size * (page_number - 1) end)
 
     query
-    |> limit(^page_size)
     |> offset(^offset)
+    |> limit(^page_size)
     |> repo.all(caller: caller)
   end
 
