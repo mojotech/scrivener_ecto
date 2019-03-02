@@ -22,10 +22,15 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     page_number =
       if allow_out_of_range_pages, do: page_number, else: min(total_pages, page_number)
 
+    items =
+      if page_number > total_pages,
+        do: [],
+        else: entries(query, repo, page_number, page_size, caller, options)
+
     %Page{
       page_size: page_size,
       page_number: page_number,
-      entries: entries(query, repo, page_number, page_size, caller, options),
+      entries: items,
       total_entries: total_entries,
       total_pages: total_pages
     }
