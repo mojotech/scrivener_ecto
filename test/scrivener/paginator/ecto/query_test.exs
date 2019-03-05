@@ -371,5 +371,47 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.entries == Enum.drop(posts, 4)
       assert page.total_pages == 2
     end
+
+    test "pagination plays nice with distinct on in the query" do
+      create_posts()
+
+      page =
+        Post
+        |> distinct([p], asc: p.title, asc: p.inserted_at)
+        |> Scrivener.Ecto.Repo.paginate()
+
+      assert page.page_size == 5
+      assert page.page_number == 1
+      assert page.total_entries == 7
+      assert page.total_pages == 2
+    end
+
+    test "pagination plays nice with absolute distinct in the query" do
+      create_posts()
+
+      page =
+        Post
+        |> distinct(true)
+        |> Scrivener.Ecto.Repo.paginate()
+
+      assert page.page_size == 5
+      assert page.page_number == 1
+      assert page.total_entries == 7
+      assert page.total_pages == 2
+    end
+
+    test "pagination plays nice with a singular distinct in the query" do
+      create_posts()
+
+      page =
+        Post
+        |> distinct(:id)
+        |> Scrivener.Ecto.Repo.paginate()
+
+      assert page.page_size == 5
+      assert page.page_number == 1
+      assert page.total_entries == 7
+      assert page.total_pages == 2
+    end
   end
 end
