@@ -1,6 +1,8 @@
 # Changelog
 
-## 2.2.0-dev
+## 2.1.1
+
+* Correctly handle `DISTINCT` queries when counting entries
 
 ## 2.1.0
 
