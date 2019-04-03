@@ -17,10 +17,10 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
       Keyword.get_lazy(options, :total_entries, fn -> total_entries(query, repo, caller) end)
 
     total_pages = total_pages(total_entries, page_size)
-    allow_out_of_range_pages = Keyword.get(options, :allow_out_of_range_pages, false)
+    allow_overflow_page_number = Keyword.get(options, :allow_overflow_page_number, false)
 
     page_number =
-      if allow_out_of_range_pages, do: page_number, else: min(total_pages, page_number)
+      if allow_overflow_page_number, do: page_number, else: min(total_pages, page_number)
 
     items =
       if page_number > total_pages,
