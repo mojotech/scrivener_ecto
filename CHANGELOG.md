@@ -1,6 +1,8 @@
 # Changelog
 
-## 2.2.0-dev
+## 2.2.0
+
+* Allow overflow page numbers when option is provided
 
 ## 2.1.1
 
