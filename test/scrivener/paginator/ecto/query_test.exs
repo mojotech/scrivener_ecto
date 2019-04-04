@@ -213,24 +213,6 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.page_size == 10
     end
 
-    test "will respect the total_entries configuration" do
-      create_posts()
-
-      config = %Scrivener.Config{
-        module: Scrivener.Ecto.Repo,
-        page_number: 2,
-        page_size: 4,
-        options: [total_entries: 130]
-      }
-
-      page =
-        Post
-        |> Post.published()
-        |> Scrivener.paginate(config)
-
-      assert page.total_entries == 130
-    end
-
     test "will respect total_entries passed to paginate" do
       create_posts()
 
@@ -245,20 +227,28 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     test "will use total_pages if page_numer is too large" do
       posts = create_posts()
 
-      config = %Scrivener.Config{
-        module: Scrivener.Ecto.Repo,
-        page_number: 2,
-        page_size: length(posts),
-        options: []
-      }
+      page =
+        Post
+        |> Post.published()
+        |> Scrivener.Ecto.Repo.paginate(page: 3)
+
+      assert page.page_number == 2
+      assert page.entries == posts |> Enum.reverse() |> Enum.take(1)
+    end
+
+    test "allows overflow page numbers if option is specified" do
+      create_posts()
 
       page =
         Post
         |> Post.published()
-        |> Scrivener.paginate(config)
+        |> Scrivener.Ecto.Repo.paginate(
+          page: 3,
+          options: [allow_overflow_page_number: true]
+        )
 
-      assert page.page_number == 1
-      assert page.entries == posts
+      assert page.page_number == 3
+      assert page.entries == []
     end
 
     test "can be used on a table with any primary key" do
