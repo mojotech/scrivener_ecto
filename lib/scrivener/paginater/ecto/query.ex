@@ -53,7 +53,7 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     total_entries || 0
   end
 
-  defp aggregate(%{distinct: %{expr: [_ | _]}} = query) do
+  defp aggregate(%{distinct: %{expr: _}} = query) do
     query
     |> exclude(:select)
     |> count()
