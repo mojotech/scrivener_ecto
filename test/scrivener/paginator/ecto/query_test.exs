@@ -403,5 +403,21 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_entries == 7
       assert page.total_pages == 2
     end
+
+    test "correct `total_entries` with `distinct(true)` and inner join" do
+      create_posts()
+
+      query =
+        Post
+        |> distinct(true)
+        # NOTE: Using `on: true` to get non-distinct results
+        |> join(:inner, [p], c in Comment, on: true)
+
+      all = Scrivener.Ecto.Repo.all(query)
+      page = Scrivener.Ecto.Repo.paginate(query)
+
+      assert page.total_entries == Enum.count(all)
+      assert page.total_entries == 7
+    end
   end
 end
