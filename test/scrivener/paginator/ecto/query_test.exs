@@ -405,7 +405,7 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     end
 
     test "pagination plays nice with absolute distinct on a join query" do
-      posts = create_posts()
+      create_posts()
 
       page =
         Post
