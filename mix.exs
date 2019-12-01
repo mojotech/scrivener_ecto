@@ -22,6 +22,10 @@ defmodule Scrivener.Ecto.Mixfile do
 
   defp aliases do
     [
+      "ecto.setup": [
+        "ecto.create",
+        "ecto.migrate"
+      ],
       "db.reset": [
         "ecto.drop",
         "ecto.create",

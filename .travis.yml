@@ -3,9 +3,16 @@ otp_release:
   - 21.2
 elixir:
   - 1.8.1
+sudo: false
+services:
+  - postgresql
+env:
+  - MIX_ENV=test
 before_script:
   - export SCRIVENER_ECTO_DB_USER=postgres
-  - MIX_ENV=test mix db.reset
 script:
-  - mix test
+  - mix deps.get
+  - mix compile
+  - mix ecto.setup
   - mix format --check-formatted
+  - mix test
