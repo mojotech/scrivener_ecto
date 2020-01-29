@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.3.0-dev
+## 2.3.0
 
 * Upgrade ecto to `~> 3.3`
 
