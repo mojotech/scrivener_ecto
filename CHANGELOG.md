@@ -2,6 +2,8 @@
 
 ## 2.3.0-dev
 
+* Upgrade ecto to `~> 3.3`
+
 ## 2.2.0
 
 * Allow overflow page numbers when option is provided
