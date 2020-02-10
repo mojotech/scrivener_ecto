@@ -419,6 +419,5 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_entries == 1
       assert page.total_pages == 1
     end
-
   end
 end
