@@ -67,16 +67,14 @@ page =
 
 ## Installation
 
-Add `scrivener_ecto` to your `mix.exs` `applications` and `dependencies`.
+Add `scrivener_ecto` to your `mix.exs` `deps`.
 
 ```elixir
-def application do
-  [applications: [:scrivener_ecto]]
+defp deps do
+  [
+    {:scrivener_ecto, "~> 2.0"}
+  ]
 end
-```
-
-```elixir
-[{:scrivener_ecto, "~> 2.0"}]
 ```
 
 ## Contributing
