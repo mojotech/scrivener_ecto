@@ -403,5 +403,21 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.total_entries == 7
       assert page.total_pages == 2
     end
+
+    test "pagination plays nice with absolute distinct on a join query" do
+      create_posts()
+
+      page =
+        Post
+        |> distinct(true)
+        |> join(:inner, [p], c in assoc(p, :comments))
+        |> Scrivener.Ecto.Repo.paginate()
+
+      assert length(page.entries) == 1
+      assert page.page_size == 5
+      assert page.page_number == 1
+      assert page.total_entries == 1
+      assert page.total_pages == 1
+    end
   end
 end
