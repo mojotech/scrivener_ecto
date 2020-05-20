@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.4.0-dev
+## 2.4.0
 
 * Handle absolute distinct clauses in join pagination
 
