@@ -2,6 +2,8 @@
 
 ## 2.4.0-dev
 
+* Handle absolute distinct clauses in join pagination
+
 ## 2.3.0
 
 * Upgrade ecto to `~> 3.3`
