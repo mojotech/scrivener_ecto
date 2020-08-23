@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.5.0-dev
+## 2.5.0
 
 * Add `prefix` options (see
   [test](https://github.com/drewolson/scrivener_ecto/blob/8ef17361251aea9784d5b0402547327d90ca4184/test/scrivener/paginator/ecto/query_test.exs#L430)
