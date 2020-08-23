@@ -14,7 +14,9 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
         options: options
       }) do
     total_entries =
-      Keyword.get_lazy(options, :total_entries, fn -> total_entries(query, repo, caller, options) end)
+      Keyword.get_lazy(options, :total_entries, fn ->
+        total_entries(query, repo, caller, options)
+      end)
 
     total_pages = total_pages(total_entries, page_size)
     allow_overflow_page_number = Keyword.get(options, :allow_overflow_page_number, false)

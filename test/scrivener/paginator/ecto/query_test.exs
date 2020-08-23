@@ -425,7 +425,8 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
     end
 
     test "can specify prefix" do
-      [schema_tenant_1, schema_tenant_2] = Application.fetch_env!(:scrivener_ecto, :prefixes) |> IO.inspect(label: "schemas")
+      [schema_tenant_1, schema_tenant_2] =
+        Application.fetch_env!(:scrivener_ecto, :prefixes) |> IO.inspect(label: "schemas")
 
       create_posts(prefix: schema_tenant_1)
       page_tenant_1 = Scrivener.Ecto.Repo.paginate(Post, options: [prefix: schema_tenant_1])
