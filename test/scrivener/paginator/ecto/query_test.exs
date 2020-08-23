@@ -3,21 +3,21 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
 
   alias Scrivener.Ecto.{Comment, KeyValue, Post}
 
-  defp create_posts do
+  defp create_posts(opts \\ []) do
     unpublished_post =
       %Post{
         title: "Title unpublished",
         body: "Body unpublished",
         published: false
       }
-      |> Scrivener.Ecto.Repo.insert!()
+      |> insert!(opts)
 
     Enum.map(1..2, fn i ->
       %Comment{
         body: "Body #{i}",
         post_id: unpublished_post.id
       }
-      |> Scrivener.Ecto.Repo.insert!()
+      |> insert!(opts)
     end)
 
     Enum.map(1..6, fn i ->
@@ -26,18 +26,22 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
         body: "Body #{i}",
         published: true
       }
-      |> Scrivener.Ecto.Repo.insert!()
+      |> insert!(opts)
     end)
   end
 
-  defp create_key_values do
+  defp create_key_values(opts \\ []) do
     Enum.map(1..10, fn i ->
       %KeyValue{
         key: "key_#{i}",
         value: rem(i, 2) |> to_string
       }
-      |> Scrivener.Ecto.Repo.insert!()
+      |> insert!(opts)
     end)
+  end
+
+  defp insert!(struct_or_changeset, opts) do
+    Scrivener.Ecto.Repo.insert!(struct_or_changeset, opts)
   end
 
   describe "paginate" do
@@ -418,6 +422,32 @@ defmodule Scrivener.Paginator.Ecto.QueryTest do
       assert page.page_number == 1
       assert page.total_entries == 1
       assert page.total_pages == 1
+    end
+
+    test "can specify prefix" do
+      [schema_tenant_1, schema_tenant_2] = Application.fetch_env!(:scrivener_ecto, :prefixes) |> IO.inspect(label: "schemas")
+
+      create_posts(prefix: schema_tenant_1)
+      page_tenant_1 = Scrivener.Ecto.Repo.paginate(Post, options: [prefix: schema_tenant_1])
+
+      assert page_tenant_1.page_size == 5
+      assert page_tenant_1.page_number == 1
+      assert page_tenant_1.total_entries == 7
+      assert page_tenant_1.total_pages == 2
+
+      %Post{
+        title: "One post in second tenant",
+        body: "Second tenant post",
+        published: true
+      }
+      |> insert!(prefix: schema_tenant_2)
+
+      page_tenant_2 = Scrivener.Ecto.Repo.paginate(Post, options: [prefix: schema_tenant_2])
+
+      assert page_tenant_2.page_size == 5
+      assert page_tenant_2.page_number == 1
+      assert page_tenant_2.total_entries == 1
+      assert page_tenant_2.total_pages == 1
     end
   end
 end
