@@ -32,12 +32,9 @@ defmodule Scrivener.Ecto.Mixfile do
 
   def application do
     [
-      applications: applications(Mix.env())
+      extra_applications: [:logger]
     ]
   end
-
-  defp applications(:test), do: [:scrivener, :postgrex, :ecto, :logger, :telemetry]
-  defp applications(_), do: [:scrivener, :logger]
 
   defp deps do
     [
