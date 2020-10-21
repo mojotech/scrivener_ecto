@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.7.0-dev
+
 ## 2.6.0
 
 * Remove elixir 1.11 warnings
