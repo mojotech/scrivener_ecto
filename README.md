@@ -85,7 +85,7 @@ First, you'll need to build the test database.
 MIX_ENV=test mix db.reset
 ```
 
-This task assumes you have postgres installed and that your current user can create / drop databases. If you'd prefer to use a different user, you can specify it with the environment variable `SCRIVENER_ECTO_DB_USER`.
+This task assumes you have postgres installed and that the `postgres` user can create / drop databases. If you'd prefer to use a different user, you can specify it with the environment variable `SCRIVENER_ECTO_DB_USER`.
 
 With the database built, you can now run the tests.
 

@@ -6,7 +6,6 @@ otp_release:
 elixir:
   - 1.11.1
 before_script:
-  - export SCRIVENER_ECTO_DB_USER=postgres
   - MIX_ENV=test mix db.reset
 script:
   - mix test
