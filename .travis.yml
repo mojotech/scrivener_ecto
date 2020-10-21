@@ -4,7 +4,7 @@ services:
 otp_release:
   - 23.0
 elixir:
-  - 1.10.3
+  - 1.11.1
 before_script:
   - export SCRIVENER_ECTO_DB_USER=postgres
   - MIX_ENV=test mix db.reset
