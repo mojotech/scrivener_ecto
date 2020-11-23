@@ -42,7 +42,7 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     query
     |> offset(^offset)
     |> limit(^page_size)
-    |> repo.all(caller: caller, prefix: prefix)
+    |> all(repo, caller, prefix)
   end
 
   defp total_entries(query, repo, caller, options) do
@@ -53,7 +53,7 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
       |> exclude(:preload)
       |> exclude(:order_by)
       |> aggregate()
-      |> repo.one(caller: caller, prefix: prefix)
+      |> one(repo, caller, prefix)
 
     total_entries || 0
   end
@@ -98,5 +98,21 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
 
   defp total_pages(total_entries, page_size) do
     (total_entries / page_size) |> Float.ceil() |> round
+  end
+
+  defp all(query, repo, caller, nil) do
+    repo.all(query, caller: caller)
+  end
+
+  defp all(query, repo, caller, prefix) do
+    repo.all(query, caller: caller, prefix: prefix)
+  end
+
+  defp one(query, repo, caller, nil) do
+    repo.one(query, caller: caller)
+  end
+
+  defp one(query, repo, caller, prefix) do
+    repo.one(query, caller: caller, prefix: prefix)
   end
 end
