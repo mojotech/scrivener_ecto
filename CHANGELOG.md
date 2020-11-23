@@ -1,6 +1,8 @@
 # Changelog
 
-## 2.7.0-dev
+## 2.7.0
+
+* Don't pass `prefix` to repo when not provided
 
 ## 2.6.0
 
