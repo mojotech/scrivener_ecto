@@ -5,18 +5,13 @@ defmodule Scrivener.Ecto.Mixfile do
     [
       app: :scrivener_ecto,
       version: "2.8.0-dev",
-      elixir: "~> 1.3",
+      elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env()),
-      package: package(),
       description: "Paginate your Ecto queries with Scrivener",
+      package: package(),
       deps: deps(),
-      aliases: aliases(),
-      docs: [
-        main: "readme",
-        extras: [
-          "README.md"
-        ]
-      ]
+      docs: docs(),
+      aliases: aliases()
     ]
   end
 
@@ -42,8 +37,7 @@ defmodule Scrivener.Ecto.Mixfile do
       {:ecto, "~> 3.3"},
       {:ecto_sql, "~> 3.3", only: :test},
       {:dialyxir, "~> 1.0", only: :dev},
-      {:earmark, ">= 0.0.0", only: :dev},
-      {:ex_doc, "~> 0.23", only: :dev},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:postgrex, "~> 0.15.0", only: :test}
     ]
   end
@@ -55,12 +49,27 @@ defmodule Scrivener.Ecto.Mixfile do
     [
       maintainers: ["Drew Olson"],
       licenses: ["MIT"],
-      links: %{"github" => "https://github.com/drewolson/scrivener_ecto"},
+      links: %{
+        "Changelog" => "https://hexdocs.pm/scrivener_ecto/changelog.html",
+        "GitHub" => "https://github.com/drewolson/scrivener_ecto"
+
+      },
       files: [
         "lib/scrivener",
         "mix.exs",
-        "README.md"
+        "CHANGELOG.md",
+        "README.md",
+        "LICENSE"
       ]
+    ]
+  end
+
+  defp docs do
+    [
+      extras: ["CHANGELOG.md", "README.md"],
+      main: "readme",
+      api_reference: false,
+      extra_section: []
     ]
   end
 end
