@@ -1,6 +1,7 @@
 # Scrivener.Ecto
 
-[![Build Status](https://travis-ci.org/drewolson/scrivener_ecto.svg?branch=master)](https://travis-ci.org/drewolson/scrivener_ecto) [![Hex Version](http://img.shields.io/hexpm/v/scrivener_ecto.svg?style=flat)](https://hex.pm/packages/scrivener_ecto) [![Hex docs](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/scrivener_ecto)
+[![Build
+Status](https://github.com/drewolson/scrivener_ecto/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/drewolson/scrivener_ecto/actions/workflows/test.yml)
 
 ## Low Maintenance Warning
 
