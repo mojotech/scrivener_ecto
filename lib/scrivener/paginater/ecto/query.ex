@@ -88,7 +88,13 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     query
     |> exclude(:preload)
     |> exclude(:order_by)
-    subquery(query)
+    |> exclude(:select)
+    |> count()
+  end
+
+  defp count(query) do
+    query
+    |> subquery
     |> select(count("*"))
   end
 
