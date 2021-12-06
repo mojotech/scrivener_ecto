@@ -77,6 +77,8 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
          } = query
        ) do
     query
+    |> exclude(:preload)
+    |> exclude(:order_by)
     |> exclude(:select)
     |> select([{x, source_index}], struct(x, ^[field]))
     |> count()
@@ -84,13 +86,9 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
 
   defp aggregate(query) do
     query
-    |> exclude(:select)
-    |> select(count("*"))
-  end
-
-  defp count(query) do
-    query
-    |> subquery
+    |> exclude(:preload)
+    |> exclude(:order_by)
+    subquery(query)
     |> select(count("*"))
   end
 
