@@ -64,6 +64,14 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
     |> count()
   end
 
+  defp aggregate(%{combinations: [_|_] = combinations} = query) do
+    query
+    |> exclude(:preload)
+    |> exclude(:order_by)
+    |> exclude(:select)
+    |> count()
+  end
+
   defp aggregate(
          %{
            group_bys: [
@@ -77,8 +85,6 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
          } = query
        ) do
     query
-    |> exclude(:preload)
-    |> exclude(:order_by)
     |> exclude(:select)
     |> select([{x, source_index}], struct(x, ^[field]))
     |> count()
@@ -86,10 +92,8 @@ defimpl Scrivener.Paginater, for: Ecto.Query do
 
   defp aggregate(query) do
     query
-    |> exclude(:preload)
-    |> exclude(:order_by)
     |> exclude(:select)
-    |> count()
+    |> select(count("*"))
   end
 
   defp count(query) do
