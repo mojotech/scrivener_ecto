@@ -6,6 +6,7 @@ config :scrivener_ecto, Scrivener.Ecto.Repo,
   adapter: Ecto.Adapters.Postgres,
   pool: Ecto.Adapters.SQL.Sandbox,
   database: "scrivener_test",
-  username: System.get_env("SCRIVENER_ECTO_DB_USER") || "postgres"
+  username: System.get_env("SCRIVENER_ECTO_DB_USER") || "postgres",
+  password: System.get_env("SCRIVENER_ECTO_DB_PASS") || "postgres"
 
 config :logger, :console, level: :error
