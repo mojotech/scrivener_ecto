@@ -4,7 +4,7 @@ defmodule Scrivener.Ecto.Mixfile do
   def project do
     [
       app: :scrivener_ecto,
-      version: "2.8.0-dev",
+      version: "2.7.1",
       elixir: "~> 1.3",
       elixirc_paths: elixirc_paths(Mix.env()),
       package: package(),
