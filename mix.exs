@@ -4,8 +4,8 @@ defmodule Scrivener.Ecto.Mixfile do
   def project do
     [
       app: :scrivener_ecto,
-      version: "2.7.1",
-      elixir: "~> 1.3",
+      version: "2.8.0",
+      elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env()),
       package: package(),
       description: "Paginate your Ecto queries with Scrivener",
@@ -53,9 +53,10 @@ defmodule Scrivener.Ecto.Mixfile do
 
   defp package do
     [
-      maintainers: ["Drew Olson"],
+      name: "torch_scrivener_ecto",
+      maintainers: ["MojoTech, LLC"],
       licenses: ["MIT"],
-      links: %{"github" => "https://github.com/drewolson/scrivener_ecto"},
+      links: %{"github" => "https://github.com/mojotech/scrivener_ecto"},
       files: [
         "lib/scrivener",
         "mix.exs",
