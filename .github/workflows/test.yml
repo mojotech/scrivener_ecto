@@ -36,6 +36,12 @@ jobs:
             otp: 25.x
           - elixir: 1.16.x
             otp: 26.x
+          - elixir: 1.17.x
+            otp: 25.x
+          - elixir: 1.17.x
+            otp: 26.x
+          - elixir: 1.17.x
+            otp: 27.x
 
     services:
       db:
@@ -80,4 +86,3 @@ jobs:
         run: mix test
         env:
           MIX_ENV: test
-
