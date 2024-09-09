@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :scrivener_ecto, ecto_repos: [Scrivener.Ecto.Repo]
 

@@ -1,7 +1,7 @@
 # Scrivener.Ecto
 
 [![Build
-Status](https://github.com/drewolson/scrivener_ecto/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/drewolson/scrivener_ecto/actions/workflows/test.yml)
+Status](https://github.com/mojotech/scrivener_ecto/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/mojotech/scrivener_ecto/actions/workflows/test.yml)
 
 ## Low Maintenance Warning
 
@@ -73,7 +73,7 @@ Add `scrivener_ecto` to your `mix.exs` `deps`.
 ```elixir
 defp deps do
   [
-    {:scrivener_ecto, "~> 2.0"}
+    {:scrivener_ecto, "~> 3.0"}
   ]
 end
 ```
