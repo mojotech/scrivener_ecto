@@ -1,29 +1,83 @@
-name: test
+name: Torch Scrivener.Ecto Tests
 
 on:
-  - push
-  - pull_request
+  pull_request:
+    branches: [master, main]
+    types: [opened, edited, reopened, synchronize]
+  push:
+    branches: [master, main]
+    tags:
+      - v[2-9].[0-9]+.[0-9]+
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: mix test (Elixir ${{matrix.elixir}} | OTP ${{matrix.otp}})
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - elixir: 1.14.x
+            otp: 23.x
+          - elixir: 1.14.x
+            otp: 24.x
+          - elixir: 1.14.x
+            otp: 25.x
+          - elixir: 1.15.x
+            otp: 24.x
+          - elixir: 1.15.x
+            otp: 25.x
+          - elixir: 1.15.x
+            otp: 26.x
+          - elixir: 1.16.x
+            otp: 24.x
+          - elixir: 1.16.x
+            otp: 25.x
+          - elixir: 1.16.x
+            otp: 26.x
 
     services:
-      postgres:
-        image: "postgres:13"
-        ports:
-          - 5432:5432
+      db:
+        image: postgres:latest
         env:
           POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      MIX_ENV: test
+      ImageOS: ubuntu20 # run on ubuntu-20.04 (which supports Erlang/OTP 20-25)
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: erlef/setup-elixir@v1
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
         with:
-          otp-version: '23.2.6'
-          elixir-version: '1.11.3'
-      - run: mix local.rebar --force
-      - run: mix local.hex --force
-      - run: mix deps.get
-      - run: MIX_ENV=test mix db.reset
-      - run: mix test
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
+      - name: Cache mix deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: deps-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-
+      - name: Install hex deps
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+      - name: Install hex dependencies
+        run: mix deps.get --only test
+      - name: DB Reset
+        run: mix db.reset
+      - name: Mix Test
+        run: mix test
+        env:
+          MIX_ENV: test
+
