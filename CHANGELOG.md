@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.0
+
+### Breaking Changes
+
+* Updated config elixir version to 1.14 minimum
+* Updated deps to Ecto 3.5
+* Support the same OTP/Elixir matrix as [Torch project](https://www.github.com/mojotech/torch)
+  - Elixir 1.14-16
+  - OTP 23.x-26.x
+
 ## 2.8.0-dev
 
 ## 2.7.0
