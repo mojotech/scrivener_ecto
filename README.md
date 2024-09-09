@@ -82,11 +82,17 @@ end
 
 First, you'll need to build the test database.
 
-```elixir
-MIX_ENV=test mix ecto.reset
+```bash
+MIX_ENV=test mix db.reset
 ```
 
-This task assumes you have postgres installed and that the `postgres` user can create / drop databases. If you'd prefer to use a different user, you can specify it with the environment variable `SCRIVENER_ECTO_DB_USER`.
+This task assumes you have Postgres installed and that the `postgres` user can create / drop databases. If you'd prefer to use a different user, you can specify it with the environment variable `SCRIVENER_ECTO_DB_USER`.
+
+Alternatively, if you prefer to use Docker for database setup.
+
+```bash
+docker-compose up
+```
 
 With the database built, you can now run the tests.
 
