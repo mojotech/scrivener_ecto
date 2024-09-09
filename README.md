@@ -72,7 +72,7 @@ Add `scrivener_ecto` to your `mix.exs` `deps`.
 ```elixir
 defp deps do
   [
-    {:scrivener_ecto, "~> 2.0"}
+    {:scrivener_ecto, "~> 2.7"}
   ]
 end
 ```

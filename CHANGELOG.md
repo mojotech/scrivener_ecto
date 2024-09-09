@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.7.1
+
+* Version spec updates for Ecto >= 3.3 and < 3.12
+
 ## 2.7.0
 
 * Don't pass `prefix` to repo when not provided
