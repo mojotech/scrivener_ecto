@@ -53,9 +53,9 @@ defmodule Scrivener.Ecto.Mixfile do
 
   defp package do
     [
-      maintainers: ["Drew Olson"],
+      maintainers: ["MojoTech"],
       licenses: ["MIT"],
-      links: %{"github" => "https://github.com/drewolson/scrivener_ecto"},
+      links: %{"GitHub" => "https://github.com/mojotech/scrivener_ecto"},
       files: [
         "lib/scrivener",
         "mix.exs",
