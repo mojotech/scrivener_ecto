@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0
+
+* Pass all options to the Ecto.Repo calls - via [PR #112](https://github.com/mojotech/scrivener_ecto/pull/112)
+
 ## 3.0.1
 
 * Fix total entries value when query has combinations - via [PR #98](https://github.com/mojotech/scrivener_ecto/pull/98)
