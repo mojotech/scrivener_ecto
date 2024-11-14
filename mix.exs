@@ -1,32 +1,22 @@
 defmodule Scrivener.Ecto.Mixfile do
   use Mix.Project
 
+  @source_url "https://github.com/mojotech/scrivener_ecto"
+  @version "3.1.1"
+
   def project do
     [
       app: :scrivener_ecto,
-      version: "3.1.0",
+      version: @version,
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       package: package(),
       description: "Paginate your Ecto queries with Scrivener",
+      source_url: @source_url,
+      homepage_url: @source_url,
       deps: deps(),
       aliases: aliases(),
-      docs: [
-        main: "readme",
-        extras: [
-          "README.md"
-        ]
-      ]
-    ]
-  end
-
-  defp aliases do
-    [
-      "db.reset": [
-        "ecto.drop",
-        "ecto.create",
-        "ecto.migrate"
-      ]
+      docs: docs()
     ]
   end
 
@@ -48,8 +38,31 @@ defmodule Scrivener.Ecto.Mixfile do
     ]
   end
 
+  defp aliases do
+    [
+      "db.reset": [
+        "ecto.drop",
+        "ecto.create",
+        "ecto.migrate"
+      ]
+    ]
+  end
+
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp docs do
+    [
+      main: "readme",
+      extras: [
+        "README.md": [title: "Overview"],
+        "LICENSE": [title: "License"],
+        "CHANGELOG.md": [title: "Changelog"]
+      ],
+      source_ref: "v#{@version}",
+      formatters: ~w(html)
+    ]
+  end
 
   defp package do
     [
@@ -59,6 +72,8 @@ defmodule Scrivener.Ecto.Mixfile do
       files: [
         "lib/scrivener",
         "mix.exs",
+        "CHANGELOG.md",
+        "LICENSE",
         "README.md"
       ]
     ]
